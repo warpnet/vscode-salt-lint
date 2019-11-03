@@ -3,6 +3,38 @@ import * as vscode from 'vscode';
 import * as cp from 'child_process';
 import { ThrottledDelayer } from './utils/async';
 
+
+interface SaltLintSettings {
+    enabled: boolean;
+    executable: string;
+    trigger: RunTrigger;
+}
+
+enum RunTrigger {
+    onSave,
+    onType,
+    manual,
+}
+
+namespace RunTrigger {
+    export const strings = {
+        onSave: 'onSave',
+        onType: 'onType',
+        manual: 'manual',
+    };
+
+    export function from(value: string): RunTrigger {
+        switch (value) {
+            case strings.onSave:
+                return RunTrigger.onSave;
+            case strings.onType:
+                return RunTrigger.onType;
+            default:
+                return RunTrigger.manual;
+        }
+    }
+}
+
 namespace CommandIds {
     export const runLint: string = 'salt-lint.runLint';
     export const openRuleDoc: string = 'salt-lint.openRuleDoc';
@@ -31,11 +63,17 @@ function makeDiagnostic(textDocument: vscode.TextDocument, item: SaltLintItem): 
     return diagnostic;
 }
 
+function substitutePath(s: string): string {
+    return s.replace(/\${workspaceRoot}/g, vscode.workspace.rootPath || '');
+}
+
 export default class SaltLintProvider implements vscode.CodeActionProvider {
 
     public static LANGUAGE_ID = 'saltstack';
     private channel: vscode.OutputChannel;
+    private settings!: SaltLintSettings;
     private executableNotFound: boolean;
+    private documentListener!: vscode.Disposable;
     private delayers!: { [key: string]: ThrottledDelayer<void> };
     private readonly diagnosticCollection: vscode.DiagnosticCollection;
 
@@ -63,7 +101,8 @@ export default class SaltLintProvider implements vscode.CodeActionProvider {
             }),
         );
 
-        this.delayers = Object.create(null);
+        // populate this.settings
+        this.loadConfiguration();
 
         // event handlers
         vscode.workspace.onDidOpenTextDocument(this.triggerLint, this, context.subscriptions);
@@ -77,9 +116,44 @@ export default class SaltLintProvider implements vscode.CodeActionProvider {
     }
 
     public dispose(): void {
+        this.disposeDocumentListener();
         this.diagnosticCollection.clear();
         this.diagnosticCollection.dispose();
         this.channel.dispose();
+    }
+
+    private disposeDocumentListener(): void {
+        if (this.documentListener) {
+            this.documentListener.dispose();
+        }
+    }
+
+    private loadConfiguration(): void {
+        const section = vscode.workspace.getConfiguration('salt-lint', null);
+        const settings = <SaltLintSettings>{
+            enabled: section.get('enable', true),
+            trigger: RunTrigger.from(section.get('run', RunTrigger.strings.onType)),
+            executable: substitutePath(section.get('executablePath', 'salt-lint')),
+        };
+        this.settings = settings;
+
+        this.delayers = Object.create(null);
+
+        this.disposeDocumentListener();
+        this.diagnosticCollection.clear();
+        if (settings.enabled) {
+            if (settings.trigger === RunTrigger.onType) {
+                this.documentListener = vscode.workspace.onDidChangeTextDocument((e) => {
+                    this.triggerLint(e.document);
+                }, this, this.context.subscriptions);
+            } else if (settings.trigger === RunTrigger.onSave) {
+                this.documentListener = vscode.workspace.onDidSaveTextDocument(this.triggerLint, this, this.context.subscriptions);
+            }
+        }
+
+        // Configuration has changed. Re-evaluate all documents
+        this.executableNotFound = false;
+        vscode.workspace.textDocuments.forEach(this.triggerLint, this);
     }
 
     public provideCodeActions(document: vscode.TextDocument, range: vscode.Range | vscode.Selection, context: vscode.CodeActionContext, token: vscode.CancellationToken): vscode.ProviderResult<(vscode.Command | vscode.CodeAction)[]> {
@@ -114,15 +188,19 @@ export default class SaltLintProvider implements vscode.CodeActionProvider {
     }
 
     private triggerLint(textDocument: vscode.TextDocument): void {
-        this.channel.appendLine(`[DEBUG] tiggerLint`);
         if (this.executableNotFound || !this.isAllowedTextDocument(textDocument)) {
+            return;
+        }
+
+        if (!this.settings.enabled) {
+            this.diagnosticCollection.delete(textDocument.uri);
             return;
         }
 
         const key = textDocument.uri.toString();
         let delayer = this.delayers[key];
         if (!delayer) {
-            delayer = new ThrottledDelayer<void>(250);
+            delayer = new ThrottledDelayer<void>(this.settings.trigger === RunTrigger.onType ? 250 : 0);
             this.delayers[key] = delayer;
         }
 
@@ -131,7 +209,8 @@ export default class SaltLintProvider implements vscode.CodeActionProvider {
 
     private runLint(textDocument: vscode.TextDocument): Promise<void> {
         return new Promise<void>((resolve, reject) => {
-            const executable = 'salt-lint';
+            const settings = this.settings;
+            const executable = settings.executable || 'salt-lint';
             let args = ['--json'];
 
             let cwd: string | undefined;

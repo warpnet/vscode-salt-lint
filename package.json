@@ -45,7 +45,36 @@
 				"command": "salt-lint.runLint",
 				"title": "salt-lint: Run Linting"
 			}
-		]
+		],
+		"configuration": {
+			"title": "salt-lint",
+			"type": "object",
+			"properties": {
+				"salt-lint.enable": {
+					"description": "Whether salt-lint is enabled or not.",
+					"type": "boolean",
+					"scope": "resource",
+					"default": true
+				},
+				"salt-lint.executablePath": {
+					"description": "Path to the salt-lint executable.",
+					"type": "string",
+					"scope": "resource",
+					"default": "salt-lint"
+				},
+				"shellcheck.run": {
+					"description": "Whether salt-lint is run on save or on type.",
+					"type": "string",
+					"enum": [
+						"onSave",
+						"onType",
+						"manual"
+					],
+					"scope": "resource",
+					"default": "onType"
+				}
+			}
+		}
 	},
 	"scripts": {
 		"vscode:prepublish": "npm run compile",
