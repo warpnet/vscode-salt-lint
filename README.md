@@ -1,5 +1,8 @@
 # vscode-salt-lint
 
+[![Current Version](https://vsmarketplacebadge.apphb.com/version/warpnet.salt-lint.svg)](https://marketplace.visualstudio.com/items?itemName=warpnet.salt-lint)
+[![Install Count](https://vsmarketplacebadge.apphb.com/installs-short/warpnet.salt-lint.svg)](https://marketplace.visualstudio.com/items?itemName=warpnet.salt-lint)
+
 ## Requirements
 
 1. Ensure `salt-lint` is installed (`v0.1.0` or newer).
