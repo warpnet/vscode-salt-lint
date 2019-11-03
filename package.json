@@ -1,23 +1,50 @@
 {
 	"name": "salt-lint",
 	"displayName": "salt-lint",
-	"description": "",
+	"description": "salt-lint checks Salt State files (SLS) for practices and behavior that could potentially be improved.",
 	"version": "0.0.1",
 	"engines": {
 		"vscode": "^1.39.0"
 	},
 	"categories": [
-		"Other"
+		"Programming Languages",
+		"Linters"
 	],
+	"keywords": [
+		"saltstack",
+		"salt",
+		"salt-lint",
+		"linter",
+		"lint"
+	],
+	"homepage": "https://github.com/warpnet/vscode-salt-lint",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/warpnet/vscode-salt-lint.git"
+	},
 	"activationEvents": [
-		"onCommand:extension.helloWorld"
+		"onLanguage:saltstack"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
-		"commands": [{
-			"command": "extension.helloWorld",
-			"title": "Hello World"
-		}]
+		"languages": [
+            {
+                "id": "saltstack",
+                "aliases": [
+                    "SaltStack",
+                    "salt"
+                ],
+                "extensions": [
+                    ".sls"
+                ]
+            }
+        ],
+		"commands": [
+			{
+				"command": "salt-lint.runLint",
+				"title": "salt-lint: Run Linting"
+			}
+		]
 	},
 	"scripts": {
 		"vscode:prepublish": "npm run compile",
