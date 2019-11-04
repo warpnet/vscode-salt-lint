@@ -49,13 +49,29 @@ interface SaltLintItem {
     severity: string;
 }
 
+function severityToDiagnosticSeverity(severity: string): vscode.DiagnosticSeverity {
+    switch (severity) {
+        case 'HIGH':
+            return vscode.DiagnosticSeverity.Error;
+        case 'INFO':
+            return vscode.DiagnosticSeverity.Information;
+        case 'MEDIUM':
+        /* falls through */
+        case 'LOW':
+        /* falls through */
+        case 'VERY_LOW':
+        /* falls through */
+        default:
+            return vscode.DiagnosticSeverity.Warning;
+    }
+}
+
 function makeDiagnostic(textDocument: vscode.TextDocument, item: SaltLintItem): vscode.Diagnostic {
     let startPos = new vscode.Position(item.linenumber - 1, item.line.search(/\S/));
     let endPos = new vscode.Position(item.linenumber - 1, item.line.length);
 
     const range = new vscode.Range(startPos, endPos);
-    // const severity = levelToDiagnosticSeverity(item.level);
-    const severity = vscode.DiagnosticSeverity.Warning;
+    const severity = severityToDiagnosticSeverity(item.severity);
     const diagnostic = new vscode.Diagnostic(range, item.message, severity);
     diagnostic.source = 'salt-lint';
     diagnostic.code = item.id;
