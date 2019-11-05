@@ -24,16 +24,17 @@
 		"url": "https://github.com/warpnet/vscode-salt-lint.git"
 	},
 	"activationEvents": [
-		"onLanguage:saltstack"
+		"onLanguage:sls"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
 		"languages": [
             {
-                "id": "saltstack",
+                "id": "sls",
                 "aliases": [
                     "SaltStack",
-                    "salt"
+                    "salt",
+                    "pillar"
                 ],
                 "extensions": [
                     ".sls"

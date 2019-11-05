@@ -85,7 +85,7 @@ function substitutePath(s: string): string {
 
 export default class SaltLintProvider implements vscode.CodeActionProvider {
 
-    public static LANGUAGE_ID = 'saltstack';
+    public static LANGUAGE_ID = 'sls';
     private channel: vscode.OutputChannel;
     private settings!: SaltLintSettings;
     private executableNotFound: boolean;
