@@ -253,8 +253,8 @@ export default class SaltLintProvider implements vscode.CodeActionProvider {
 
                 const output: string[] = [];
                 childProcess.stdout
-                    .on('data', (data: Buffer) => {
-                        output.push(data.toString());
+                    .on('data', (data) => {
+                        output.push(Buffer.from(data).toString());
                     })
                     .on('end', () => {
                         let diagnostics: vscode.Diagnostic[] = [];
