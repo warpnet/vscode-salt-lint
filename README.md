@@ -27,7 +27,7 @@ Default options are:
 
 By default the linter will lint as you type. Alternatively, set `salt-lint.run` to `onSave` if you want to lint only when the file is saved (works best if auto-save is on).
 
-```json
+```javascript
 {
     "salt-lint.run": "onType" // also: "onSave"
 }

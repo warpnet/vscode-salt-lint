@@ -2,7 +2,7 @@
 	"name": "salt-lint",
 	"displayName": "salt-lint",
 	"description": "salt-lint checks Salt State files (SLS) for practices and behavior that could potentially be improved.",
-	"version": "0.0.3",
+	"version": "0.0.4",
 	"publisher": "warpnet",
 	"engines": {
 		"vscode": "^1.39.0"
