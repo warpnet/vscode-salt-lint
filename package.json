@@ -1,34 +1,36 @@
 {
-	"name": "salt-lint",
-	"displayName": "salt-lint",
-	"description": "salt-lint checks Salt State files (SLS) for practices and behavior that could potentially be improved.",
-	"version": "0.0.4",
-	"publisher": "warpnet",
-	"engines": {
-		"vscode": "^1.39.0"
-	},
-	"categories": [
-		"Programming Languages",
-		"Linters"
-	],
-	"keywords": [
-		"saltstack",
-		"salt",
-		"salt-lint",
-		"linter",
-		"lint"
-	],
-	"homepage": "https://github.com/warpnet/vscode-salt-lint",
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/warpnet/vscode-salt-lint.git"
-	},
-	"activationEvents": [
-		"onLanguage:sls"
-	],
-	"main": "./out/extension.js",
-	"contributes": {
-		"languages": [
+  "name": "salt-lint",
+  "displayName": "salt-lint",
+  "description": "salt-lint checks Salt State files (SLS) for practices and behavior that could potentially be improved.",
+  "version": "0.0.5",
+  "publisher": "warpnet",
+  "license": "SEE LICENSE IN LICENSE",
+  "icon": "icon.png",
+  "engines": {
+    "vscode": "^1.39.0"
+  },
+  "categories": [
+    "Programming Languages",
+    "Linters"
+  ],
+  "keywords": [
+    "saltstack",
+    "salt",
+    "salt-lint",
+    "linter",
+    "lint"
+  ],
+  "homepage": "https://github.com/warpnet/vscode-salt-lint",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/warpnet/vscode-salt-lint.git"
+  },
+  "activationEvents": [
+    "onLanguage:sls"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "languages": [
             {
                 "id": "sls",
                 "aliases": [
@@ -41,58 +43,58 @@
                 ]
             }
         ],
-		"commands": [
-			{
-				"command": "salt-lint.runLint",
-				"title": "salt-lint: Run Linting"
-			}
-		],
-		"configuration": {
-			"title": "salt-lint",
-			"type": "object",
-			"properties": {
-				"salt-lint.enable": {
-					"description": "Whether salt-lint is enabled or not.",
-					"type": "boolean",
-					"scope": "resource",
-					"default": true
-				},
-				"salt-lint.executablePath": {
-					"description": "Path to the salt-lint executable.",
-					"type": "string",
-					"scope": "resource",
-					"default": "salt-lint"
-				},
-				"shellcheck.run": {
-					"description": "Whether salt-lint is run on save or on type.",
-					"type": "string",
-					"enum": [
-						"onSave",
-						"onType",
-						"manual"
-					],
-					"scope": "resource",
-					"default": "onType"
-				}
-			}
-		}
-	},
-	"scripts": {
-		"vscode:prepublish": "npm run compile",
-		"compile": "tsc -p ./",
-		"watch": "tsc -watch -p ./",
-		"pretest": "npm run compile",
-		"test": "node ./out/test/runTest.js"
-	},
-	"devDependencies": {
-		"@types/glob": "^7.1.1",
-		"@types/mocha": "^5.2.7",
-		"@types/node": "^12.11.7",
-		"@types/vscode": "^1.39.0",
-		"glob": "^7.1.5",
-		"mocha": "^6.2.2",
-		"typescript": "^3.6.4",
-		"tslint": "^5.20.0",
-		"vscode-test": "^1.2.2"
-	}
+    "commands": [
+      {
+        "command": "salt-lint.runLint",
+        "title": "salt-lint: Run Linting"
+      }
+    ],
+    "configuration": {
+      "title": "salt-lint",
+      "type": "object",
+      "properties": {
+        "salt-lint.enable": {
+          "description": "Whether salt-lint is enabled or not.",
+          "type": "boolean",
+          "scope": "resource",
+          "default": true
+        },
+        "salt-lint.executablePath": {
+          "description": "Path to the salt-lint executable.",
+          "type": "string",
+          "scope": "resource",
+          "default": "salt-lint"
+        },
+        "shellcheck.run": {
+          "description": "Whether salt-lint is run on save or on type.",
+          "type": "string",
+          "enum": [
+            "onSave",
+            "onType",
+            "manual"
+          ],
+          "scope": "resource",
+          "default": "onType"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile",
+    "test": "node ./out/test/runTest.js"
+  },
+  "devDependencies": {
+    "@types/glob": "^7.1.1",
+    "@types/mocha": "^5.2.7",
+    "@types/node": "^12.11.7",
+    "@types/vscode": "^1.39.0",
+    "glob": "^7.1.5",
+    "mocha": "^6.2.2",
+    "typescript": "^3.6.4",
+    "tslint": "^5.20.0",
+    "vscode-test": "^1.2.2"
+  }
 }
