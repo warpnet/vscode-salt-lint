@@ -65,7 +65,7 @@
           "scope": "resource",
           "default": "salt-lint"
         },
-        "shellcheck.run": {
+        "salt-lint.run": {
           "description": "Whether salt-lint is run on save or on type.",
           "type": "string",
           "enum": [
