@@ -1,7 +1,8 @@
-# vscode-salt-lint
+# salt-lint extension for Visual Studio Code
 
-[![Current Version](https://vsmarketplacebadge.apphb.com/version/warpnet.salt-lint.svg)](https://marketplace.visualstudio.com/items?itemName=warpnet.salt-lint)
-[![Install Count](https://vsmarketplacebadge.apphb.com/installs-short/warpnet.salt-lint.svg)](https://marketplace.visualstudio.com/items?itemName=warpnet.salt-lint)
+[![Version](https://vsmarketplacebadge.apphb.com/version-short/warpnet.salt-lint.svg?style=flat-square&color=11beac&label=marketplace)](https://marketplace.visualstudio.com/items?itemName=warpnet.salt-lint)
+[![Install Count](https://vsmarketplacebadge.apphb.com/installs-short/warpnet.salt-lint.svg?style=flat-square&color=11beac)](https://marketplace.visualstudio.com/items?itemName=warpnet.salt-lint)
+[![Rating](https://vsmarketplacebadge.apphb.com/rating-short/warpnet.salt-lint.svg?style=flat-square&color=11beac)](https://marketplace.visualstudio.com/items?itemName=warpnet.salt-lint)
 
 ## Requirements
 
